@@ -4,13 +4,13 @@
 
 // A simple demo proxy that just logs traffic going back and forth.
 
-const { Connection, Server, WebSocketTransport } = require('./dist');
+const { Connection, Server, WebSocketTransport } = require('./');
 
 // Target debug address to connect to:
 const targetAddress = 'ws://localhost:9222/devtools/browser/7b2a52b9-f097-425a-b43c-18f0a50cdc0b';
 
 (async () => {
-  const server = await Server.create({ port: 13608 });
+  const server = await Server.create();
 
   server.onConnection(async toDebugger => {
     console.log('Got connection from debugger');
