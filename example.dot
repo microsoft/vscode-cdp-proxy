@@ -1,0 +1,17 @@
+digraph G {
+  U [label="User"];
+  F [label="Your Extension", shape=box];
+  T [label="Your Target", shape=box];
+  S [label="CDP Proxy", shape=box];
+  J [label="vscode-js-debug", shape=box];
+
+  { rank=same F S }
+
+  U -> F [label="1. Start debugging"];
+  F -> S [label="2. Start this server"];
+  F -> J [label="3. vscode.debug.startDebugging"];
+  J -> S [label="4. Connect and speak CDP"];
+  S -> T [label="5. Debug target"]
+}
+
+// render via: dot -Tpng example.dot -o example.png

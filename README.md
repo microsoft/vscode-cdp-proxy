@@ -1,64 +1,27 @@
----
-page_type: sample
-languages:
-- csharp
-products:
-- dotnet
-description: "Add 150 character max description"
-urlFragment: "update-this-to-unique-url-stub"
----
+# vscode-cdp-proxy
 
-# Official Microsoft Sample
+Sample Chrome Debug Protocol proxy used to extend `vscode-js-debug` with custom targets. This can be used to allow js-debug to work with esoteric targets, like WebAssembly-compiled and frameworks like React Native. Say you're building a React Native debugger. The general flow would work like so:
 
-<!-- 
-Guidelines on README format: https://review.docs.microsoft.com/help/onboard/admin/samples/concepts/readme-template?branch=master
+![](./example.png)
 
-Guidance on onboarding samples to docs.microsoft.com/samples: https://review.docs.microsoft.com/help/onboard/admin/samples/process/onboarding?branch=master
+1. You have a React Native extension, which allows users to start debugging via a command or a launch config.
+2. When a session starts, you start a CDP proxy, like the one in this repo. Say it starts listening on `localhost:3000`
+3. Then, you call [`vscode.debug.startDebugger`](https://code.visualstudio.com/api/references/vscode-api#debug.startDebugging) with a configuration like:
 
-Taxonomies for products and languages: https://review.docs.microsoft.com/new-hope/information-architecture/metadata/taxonomies?branch=master
--->
+   ```js
+   {
+     "type": "pwa-chrome",
+     "request": "attach",
+     "address": "localhost",  // <- host your proxy is running on
+     "port": 3000,            // <- port your proxy is running on
+   }
+   ```
 
-Give a short description for your sample here. What does it do and why is it important?
+4. The debugger will then connect to the proxy like it would any other CDP-enabled target.
+5. Finally, you translate between CDP and the protocol used to debug your target application. In the case of React Native, this is might be a minimal rewrite of some CDP behavior. In the case of more advanced WebAssembly targets, you might translate into something entirely new.
 
-## Contents
+## Using this Package
 
-Outline the file contents of the repository. It helps users navigate the codebase, build configuration and any related assets.
+Parts of this package are exported from [js-debug](https://github.com/microsoft/vscode-js-debug). We may publish these parts as nicely packaged bits for reuse here and in the extension, but that's not done right now.
 
-| File/folder       | Description                                |
-|-------------------|--------------------------------------------|
-| `src`             | Sample source code.                        |
-| `.gitignore`      | Define what to ignore at commit time.      |
-| `CHANGELOG.md`    | List of changes to the sample.             |
-| `CONTRIBUTING.md` | Guidelines for contributing to the sample. |
-| `README.md`       | This README file.                          |
-| `LICENSE`         | The license for the sample.                |
-
-## Prerequisites
-
-Outline the required components and tools that a user might need to have on their machine in order to run the sample. This can be anything from frameworks, SDKs, OS versions or IDE releases.
-
-## Setup
-
-Explain how to prepare the sample once the user clones or downloads the repository. The section should outline every step necessary to install dependencies and set up any settings (for example, API keys and output folders).
-
-## Running the sample
-
-Outline step-by-step instructions to execute the sample and see its output. Include steps for executing the sample from the IDE, starting specific services in the Azure portal or anything related to the overall launch of the code.
-
-## Key concepts
-
-Provide users with more context on the tools and services used in the sample. Explain some of the code that is being used and how services interact with each other.
-
-## Contributing
-
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
-
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+Check out `demo.js` for an example of a server.
