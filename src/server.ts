@@ -7,7 +7,7 @@ import { EventEmitter } from 'cockatiel';
 import { Connection } from './connection';
 import { WebSocketTransport } from './transports/websocket';
 import { IDisposable } from './disposable';
-import { Server as HttpServer, createServer } from 'http';
+import { Server as HttpServer, createServer, IncomingMessage } from 'http';
 import { AddressInfo } from 'net';
 
 export interface IServerOptions {
@@ -43,7 +43,7 @@ export class Server implements IDisposable {
     return new Server(wss, server);
   }
 
-  private readonly connectionEmitter = new EventEmitter<Connection>();
+  private readonly connectionEmitter = new EventEmitter<[Connection, IncomingMessage]>();
 
   /**
    * Emitter that fires when we get a new connection over CDP.
@@ -59,8 +59,8 @@ export class Server implements IDisposable {
     private readonly wss: WebSocketServer,
     private readonly httpServer: HttpServer,
   ) {
-    wss.on('connection', ws => {
-      this.connectionEmitter.emit(new Connection(new WebSocketTransport(ws)));
+    wss.on('connection', (ws, req) => {
+      this.connectionEmitter.emit([new Connection(new WebSocketTransport(ws)), req]);
     });
   }
 
