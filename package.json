@@ -1,6 +1,6 @@
 {
   "name": "vscode-cdp-proxy",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Sample Chrome Debug Protocol proxy used to extend vscode-js-debug",
   "main": "dist/index.js",
   "scripts": {
