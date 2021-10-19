@@ -69,15 +69,15 @@ export class WebSocketTransport implements ITransport {
 
   constructor(ws: WebSocket) {
     this.ws = ws;
-    this.ws.addEventListener('message', event => {
-      this.messageEmitter.emit(JSON.parse(event.data));
+    this.ws.addEventListener('message', (event) => {
+      this.messageEmitter.emit(JSON.parse(event.data as string));
     });
 
     this.ws.addEventListener('close', () => {
       this.endEmitter.emit();
     });
 
-    this.ws.addEventListener('error', error => {
+    this.ws.addEventListener('error', (error) => {
       this.errorEmitter.emit(new WebSocketError(error));
     });
   }
@@ -98,7 +98,7 @@ export class WebSocketTransport implements ITransport {
     }
 
     let callback: () => void;
-    const result = new Promise<void>(f => (callback = f));
+    const result = new Promise<void>((f) => (callback = f));
     this.ws.addEventListener('close', () => callback());
     this.ws.close();
     this.ws = undefined;

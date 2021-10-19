@@ -75,7 +75,7 @@ export class Connection {
   public readonly onReply = this.replyEmitter.addListener;
 
   constructor(private readonly transport: ITransport) {
-    transport.onMessage(msg => this.processResponse(msg as ProtocolMessage));
+    transport.onMessage((msg) => this.processResponse(msg as ProtocolMessage));
   }
 
   /**
