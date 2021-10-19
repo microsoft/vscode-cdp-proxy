@@ -9,7 +9,7 @@
     "test:unit": "mocha --opts mocha.opts",
     "test:fmt": "prettier --list-different \"src/**/*.ts\" \"*.md\"",
     "fmt": "prettier --write \"src/**/*.ts\" \"*.md\"",
-    "compile": "rimraf dist && tsc",
+    "compile": "rimraf dist && tsc && cpy src/cdp.d.ts dist",
     "watch": "rimraf dist && tsc --watch"
   },
   "repository": {
@@ -34,6 +34,7 @@
     "@types/node": "^13.7.0",
     "@types/ws": "^7.2.1",
     "chai": "^4.2.0",
+    "cpy-cli": "^3.1.1",
     "devtools-protocol": "0.0.739646",
     "mocha": "^7.0.1",
     "prettier": "^1.19.1",
