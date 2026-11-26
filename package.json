@@ -29,11 +29,8 @@
   },
   "homepage": "https://github.com/microsoft/vscode-cdp-proxy#readme",
   "devDependencies": {
-    "@types/chai": "^4.2.22",
-    "@types/mocha": "^9.0.0",
     "@types/node": "^16.11.1",
     "@types/ws": "^8.2.0",
-    "chai": "^4.3.4",
     "devtools-protocol": "0.0.932485",
     "mocha": "^12.0.2",
     "prettier": "^2.4.1",
